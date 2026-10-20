@@ -1,0 +1,8 @@
+crons:
+  - name: radio-maintenance
+    description: "Expira anúncios vencidos, publica agendados, avisa vencimentos e trata assinaturas inadimplentes"
+    cron: "*/15 * * * *"
+    endpoint: "{{BASE_URL}}/api/cron/tick"
+    method: POST
+    # Cron endpoints must ack 2xx immediately; enqueue/background the actual work.
+    enabled: true

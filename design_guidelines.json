@@ -1,0 +1,125 @@
+{
+  "brand_identity": {
+    "name": "MarkImagem Rádio Web",
+    "description": "Plataforma SaaS de rádio comercial personalizada para estabelecimentos comerciais (supermercados, açougues, padarias, hortifrutis, farmácias, etc.)",
+    "archetype": "ORGANIC & PERFORMANCE HYBRID",
+    "emotional_tone": "Profissional, vibrante, confiável, comercial e tecnológico"
+  },
+  "typography": {
+    "heading_font": "Plus Jakarta Sans, Outfit, sans-serif",
+    "body_font": "Inter, system-ui, sans-serif",
+    "mono_font": "JetBrains Mono, monospace",
+    "scale": {
+      "h1": "text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight",
+      "h2": "text-2xl sm:text-3xl font-bold tracking-tight",
+      "h3": "text-xl sm:text-2xl font-semibold tracking-tight",
+      "h4": "text-lg font-semibold",
+      "body": "text-base font-normal leading-relaxed",
+      "small": "text-sm text-slate-500 dark:text-slate-400",
+      "caption": "text-xs font-medium tracking-wide uppercase text-slate-400"
+    }
+  },
+  "colors": {
+    "theme": "dark_and_light_switchable",
+    "default_mode": "dark",
+    "palette": {
+      "brand_primary": "#E63946",
+      "brand_primary_hover": "#D62839",
+      "brand_secondary": "#1D3557",
+      "brand_accent": "#FFB703",
+      "live_red": "#EF4444",
+      "online_green": "#10B981",
+      "dark_bg": "#0B0F17",
+      "dark_card": "#131A27",
+      "dark_sidebar": "#090D14",
+      "dark_border": "#1E293B",
+      "light_bg": "#F8FAFC",
+      "light_card": "#FFFFFF",
+      "light_sidebar": "#0F172A",
+      "light_border": "#E2E8F0"
+    },
+    "gradients": {
+      "player_glow": "bg-gradient-to-r from-red-600/20 via-amber-500/10 to-blue-600/20",
+      "hero_accent": "bg-gradient-to-br from-red-500 via-rose-600 to-slate-900"
+    }
+  },
+  "layout_patterns": {
+    "sidebar_layout": {
+      "container": "min-h-screen bg-slate-950 text-slate-50 flex flex-col md:flex-row",
+      "sidebar": "w-full md:w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col justify-between shrink-0",
+      "nav_item": "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-slate-800 hover:text-white text-slate-300",
+      "nav_item_active": "bg-red-600 text-white font-semibold shadow-md shadow-red-900/30",
+      "main_content": "flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8"
+    },
+    "radio_player": {
+      "container": "bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl relative overflow-hidden",
+      "play_button": "w-20 h-20 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shadow-lg shadow-red-600/40 hover:scale-105 active:scale-95 transition-all cursor-pointer",
+      "status_badge_onair": "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500/10 text-red-500 border border-red-500/30 animate-pulse",
+      "status_badge_connected": "inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30",
+      "volume_slider": "w-32 accent-red-600"
+    }
+  },
+  "key_components": {
+    "admin_menu_items": [
+      "Dashboard",
+      "Clientes",
+      "Planos e assinaturas",
+      "Financeiro",
+      "Biblioteca musical",
+      "Programação da rádio",
+      "Intervalos comerciais",
+      "Anúncios",
+      "Voz oficial (gravação + TTS)",
+      "Solicitações dos clientes",
+      "Relatórios",
+      "Usuários e permissões",
+      "Configurações",
+      "Logs"
+    ],
+    "client_menu_items": [
+      "Minha Rádio",
+      "Minha assinatura",
+      "Meus anúncios",
+      "Solicitar anúncio",
+      "Histórico de veiculação",
+      "Pagamentos",
+      "Meu estabelecimento",
+      "Suporte"
+    ],
+    "ad_workflow_statuses": [
+      "Rascunho",
+      "Pendente Aprovação",
+      "Em Gravação",
+      "Sintetizando TTS",
+      "Aprovado",
+      "Em Veiculação",
+      "Rejeitado"
+    ]
+  },
+  "image_urls": {
+    "radio_studio_1": "https://images.unsplash.com/photo-1589903308904-1010c2294adc?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwzfHxyYWRpbyUyMHN0dWRpbyUyMG1pY3JvcGhvbmUlMjBicm9hZGNhc3QlMjBhdWRpbyUyMG11c2ljfGVufDB8fHx8MTc5MjUwODMwNnww&ixlib=rb-4.1.0&q=85",
+    "radio_studio_2": "https://images.pexels.com/photos/270288/pexels-photo-270288.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "radio_studio_3": "https://images.pexels.com/photos/164755/pexels-photo-164755.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "supermarket_1": "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHxfHxzdXBlcm1hcmtldCUyMGFpc2xlJTIwc3RvcmUlMjByZXRhaWwlMjBzaG9wcGluZ3xlbnwwfHx8fDE3OTI1MDgzMTJ8MA&ixlib=rb-4.1.0&q=85",
+    "supermarket_2": "https://images.pexels.com/photos/15491784/pexels-photo-15491784.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  },
+  "testing_requirements": {
+    "mandatory_attribute": "data-testid",
+    "examples": [
+      "data-testid=\"radio-player-play-pause-btn\"",
+      "data-testid=\"radio-player-volume-slider\"",
+      "data-testid=\"sidebar-nav-item-dashboard\"",
+      "data-testid=\"tts-generate-btn\"",
+      "data-testid=\"voice-record-btn\"",
+      "data-testid=\"ad-request-submit-btn\"",
+      "data-testid=\"checkout-mercado-pago-btn\""
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Usar Tailwind CSS e Shadcn/UI para todos os componentes.",
+    "Garantir suporte a Português do Brasil (pt-BR) e moeda R$ (Real).",
+    "Implementar simulador de rádio web funcional no navegador com player completo (play/pause, volume, progresso de anúncio, capa da música, status de conexão).",
+    "Implementar gravação de voz no navegador com MediaRecorder API + geração de locução por voz sintética (TTS / Web Speech API).",
+    "Garantir atributo data-testid em todos os botões, links, selects e inputs interativos."
+  ]
+}
