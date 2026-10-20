@@ -80,7 +80,8 @@ async def login(body: LoginIn, request: Request, response: Response):
         raise HTTPException(429, "Muitas tentativas. Tente novamente em 15 minutos.")
     user = await db.users.find_one({"email": email}, NOID)
     if not user or not verify_password(body.password, user["password_hash"]):
-        count = (att or {}).get("count", 0) + 1
+        expired_lock = att and att.get("locked_until") and att["locked_until"] <= now()
+        count = (0 if expired_lock else (att or {}).get("count", 0)) + 1
         await db.login_attempts.update_one({"identifier": ident}, {"$set": {
             "count": count, "locked_until": now() + timedelta(minutes=15) if count >= 5 else None}}, upsert=True)
         raise HTTPException(401, "E-mail ou senha inválidos")

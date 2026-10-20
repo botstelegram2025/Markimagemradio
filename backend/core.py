@@ -19,7 +19,7 @@ from cryptography.fernet import Fernet
 from fastapi import HTTPException, Request
 from motor.motor_asyncio import AsyncIOMotorClient
 
-client = AsyncIOMotorClient(os.environ["MONGO_URL"])
+client = AsyncIOMotorClient(os.environ["MONGO_URL"], tz_aware=True)
 db = client[os.environ["DB_NAME"]]
 logger = logging.getLogger("markimagem")
 logging.basicConfig(level=logging.INFO)
@@ -134,7 +134,7 @@ STORAGE_BASE = (os.environ.get("INTEGRATION_PROXY_URL") or "").strip() or "https
 STORAGE_URL = STORAGE_BASE.rstrip("/") + "/objstore/api/v1/storage"
 _storage_key = None
 _cache: "OrderedDict[str, tuple]" = OrderedDict()
-_CACHE_MAX = 40
+_CACHE_MAX = 15
 
 
 def init_storage(force=False):

@@ -230,7 +230,8 @@ async def generate_audio(aid: str, body: GenIn, user=Depends(staff)):
     s = await get_settings()
     if ad.get("business_id"):
         month = datetime.now().strftime("%Y-%m")
-        used = sum(u["chars"] async for u in db.tts_usage.find({"business_id": ad["business_id"], "month": month}))
+        used = sum(u.get("chars", 0) for u in await db.tts_usage.find({"business_id": ad["business_id"], "month": month},
+                                                                       P).to_list(100000))
         if used + len(ad["text"]) > int(s["tts_monthly_char_limit_per_client"]):
             raise HTTPException(400, "Limite mensal de caracteres de geração de voz do cliente atingido")
     try:

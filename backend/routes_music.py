@@ -75,7 +75,7 @@ async def ingest_mp3(data: bytes, filename: str, genre: str, package_id: str, us
 
 
 async def finalize_package(pkg_id, name, source, results, user):
-    track_ids = [r["track_id"] for r in results if r["track_id"]]
+    track_ids = [r["track_id"] for r in results if r["status"] == "accepted"]
     tracks = await db.tracks.find({"id": {"$in": track_ids}}, {"_id": 0, "id": 1, "duration": 1}).to_list(10000)
     dur = {t["id"]: t["duration"] for t in tracks}
     pkg = {"id": pkg_id, "name": name, "source": source, "track_ids": track_ids,

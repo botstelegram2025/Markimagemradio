@@ -84,7 +84,7 @@ export default function Requests() {
             {rows.map((r) => (
               <tr key={r.id} className="hover:bg-secondary/40 cursor-pointer" onClick={() => setSel(r)} data-testid={`request-row-${r.id}`}>
                 <Td>{fmtDateTime(r.created_at)}</Td><Td className="font-semibold">{r.business_name}</Td><Td>{LABELS[r.type]}</Td><Td>{r.title}</Td>
-                <Td className="whitespace-nowrap">{fmtDate(r.start_date)} – {fmtDate(r.end_date)}</Td><Td><StatusBadge status={r.status} /></Td>
+                <Td className="whitespace-nowrap">{r.start_date || r.end_date ? `${fmtDate(r.start_date)} – ${fmtDate(r.end_date)}` : "—"}</Td><Td><StatusBadge status={r.status} /></Td>
               </tr>
             ))}
           </Table>

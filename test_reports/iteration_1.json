@@ -1,0 +1,47 @@
+{
+  "summary": "First full E2E run of MarkImagem Rádio Web. Backend: 42 pytest cases (auth/cookies/CORS/lockout, role isolation, plans, trial + MP-not-configured checkout, music upload/ZIP/duplicate/reject/playlist order, ads create/TTS/publish/agendado/expiry/maintenance, media 403 isolation + Range 206, radio engine interleave every_n=1 and ads_paused, client request -> admin convert, edit text clears audio + version, voice consent/upload/clone-not-configured/voice test, Claude SSE copy, settings masking, webhook 401, cron 401/200, all 11 reports + CSV). Found and FIXED 2 real 500 bugs (login lockout tz compare, TTS generate for client ads). After fixes 42/42 pass. Frontend: landing plans, register with LGPD, trial checkout, client big player Play/Pause with title + NO AR badge + mini player, request dialog -> admin Solicitações convert, AI copy fills textarea, voice page (consent gating, not-configured alert, voice test audio), settings masked token, reports CSV download, mobile 390px client player + admin sidebar — all working.",
+  "backend_issues": {
+    "critical": [
+      {"endpoint": "POST /api/auth/login", "issue": "6th attempt after 5 failures returned 500 instead of 429: Mongo returns naive datetime for locked_until compared with aware now(). FIXED by AsyncIOMotorClient(..., tz_aware=True) in core.py", "priority": "CRITICAL"},
+      {"endpoint": "POST /api/admin/ads/{id}/generate", "issue": "500 'async_generator object is not iterable' for any ad with business_id (sum(... async for ...) in TTS monthly quota check). Only institutional ads worked. FIXED in routes_ads.py by using await find().to_list()", "priority": "CRITICAL"}
+    ],
+    "minor": [
+      {"endpoint": "POST /api/admin/music/upload", "issue": "A batch where all files are duplicates still creates a new package (accepted=0) containing the existing track ids and rebuilds the playlist, moving old duplicate tracks to the front ('newest package first' gets polluted)."},
+      {"endpoint": "POST /api/auth/login", "issue": "Lockout counter is not reset when locked_until expires: after the 15 min window one more wrong password re-locks immediately (count stays >=5)."},
+      {"endpoint": "GET /api/media/{id}", "issue": "Range requests load the entire file into memory and LRU cache holds 40 full files (up to ~1.2GB with 30MB MP3s). Consider streaming/smaller cache."},
+      {"endpoint": "GET /api/plans", "issue": "Seeded plans are not published, so landing/subscription shows no plans unless admin publishes one (after test cleanup the public list is empty)."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Ad editor / client request dialog / reports", "issues": ["Native browser date/time inputs (show mm/dd/yyyy, US format) instead of shadcn Calendar/date picker in pt-BR (ad-start-date-input, ad-end-date-input, ad-request-start-input, ad-request-end-input, hour inputs)", "Native <select> elements used instead of shadcn Select (styling inconsistent with dark theme)"]},
+      {"screen": "Admin Solicitações list", "issues": ["'Período' column renders '— – —' when no dates; show a single '—'"]},
+      {"screen": "Dialogs", "issues": ["Console a11y warning: DialogContent without DialogTitle (Radix) on one of the dialogs"]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/test_markimagem_api.py", "/app/backend/tests/cleanup_test_data.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Review the 2 fixes applied by testing agent (core.py tz_aware=True; routes_ads.py TTS quota sum) and keep them",
+    "Do not create a package / rebuild playlist when an upload batch has zero accepted tracks",
+    "Reset login_attempts count when lock expires",
+    "Replace native date inputs with shadcn Calendar (pt-BR) and native selects with shadcn Select",
+    "Publish at least one real plan (seeded plans are unpublished) so landing shows plans"
+  ],
+  "critical_code_review_comments": [
+    "routes_ads.generate_audio: sum over async generator was a hard crash for every client ad — add a test for client-owned ads",
+    "core.AsyncIOMotorClient was not tz_aware while code compares datetimes from Mongo with timezone-aware now() (login lockout; reset-password had a manual workaround)",
+    "routes_radio.media reads whole object into memory per request; consider streaming from object storage",
+    "Webhook verify_signature only uses data.id from query string; if MP sends id only in body the manifest omits id (by design of MP, ok) — just confirm with MP docs",
+    "AI copy model id 'claude-sonnet-5-5' works now via emergent proxy; keep it configurable"
+  ],
+  "updated_files": ["/app/backend/core.py", "/app/backend/routes_ads.py", "/app/backend/tests/test_markimagem_api.py", "/app/backend/tests/cleanup_test_data.py"],
+  "success_rate": {"backend": "100% after fixes (40/42 before fixes)", "frontend": "100% of tested flows"},
+  "test_credentials": "Superadmin markimagem2014@gmail.com / Aw@3eszx (from /app/memory/test_credentials.md). Test clients registered per run as test_A_<run>@example.com / Teste@1234 (deactivated by cleanup).",
+  "seed_data_creation": "Created TEST_ plans, TEST_ clients/operator, TEST_ ads, TEST_Voz profiles, TEST_ requests, music packages (test MP3s). Cleanup script archived TEST_ plans/ads (kept TEST_Oferta), deactivated test_ users, deleted TEST_ voice profiles, reset mp_access_token to empty and programming rules to every_n=3/ads_paused=false.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Run: cd /app/backend && REACT_APP_BACKEND_URL=<url> python -m pytest tests/test_markimagem_api.py -n 0 -v (pytest.ini enables xdist; tests are ordered/stateful so -n 0 is REQUIRED). Then run tests/cleanup_test_data.py. Test writes inside /app/backend trigger backend hot reload — wait a few seconds before running. Radio test temporarily sets global rules every_n=1 / ads_paused and restores every_n=3, ads_paused=false. MP and ElevenLabs intentionally unconfigured.",
+  "rca of the issue": "Lockout 500: login_attempts.locked_until stored as aware datetime, read back naive by Motor (tz_aware default False) -> TypeError comparing with datetime.now(timezone.utc). TTS 500: `sum(u['chars'] async for u in cursor)` builds an async generator which sum() cannot iterate; only reached when ad has business_id, so institutional ad manual test missed it."
+}
